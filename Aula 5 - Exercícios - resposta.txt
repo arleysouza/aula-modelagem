@@ -1,0 +1,49 @@
+-- Exercício 1
+select distinct c.unidade as "Unidade", c.geom
+from tbcurso as a, tbcurso_por_unidade as b, tbunidade as c
+where a.nome = 'Gestão Financeira' and a.id = b.idcurso and c.id = b.idunidade;
+
+-- Exercício 2
+select b.*
+from tbunidade as a, tbmunicipio as b
+where st_intersects(a.geom,b.geom);
+
+-- Exercício 3
+select st_centroid(b.geom) as "geom"
+from tbunidade as a, tbmunicipio as b
+where st_intersects(a.geom,b.geom);
+
+-- Exercício 4
+select a.unidade as "JCR", b.unidade as "SJC", st_distance(a.geom,b.geom) as "Distancia"
+from tbunidade as a, tbunidade as b
+where a.municipio = 'Jacareí' and b.municipio = 'São José dos Campos';
+
+-- Exercício 5
+select a.unidade as "JCR", b.unidade as "SJC", st_distance(st_transform(a.geom,31983),st_transform(b.geom,31983)) as "Distancia"
+from tbunidade as a, tbunidade as b
+where a.municipio = 'Jacareí' and b.municipio = 'São José dos Campos';
+
+-- Exercício 6
+select *
+from tbmunicipio
+where mesoreg = 'VALE DO PARAIBA PAULISTA';
+
+-- Exercício 7
+select a.*
+from tbunidade as a, tbmunicipio as b 
+where b.mesoreg = 'VALE DO PARAIBA PAULISTA' and st_intersects(a.geom,b.geom);
+
+-- Exercício 8
+select st_buffer(a.geom,0.2) as "geom"
+from tbunidade as a, tbmunicipio as b 
+where b.mesoreg = 'VALE DO PARAIBA PAULISTA' and st_intersects(a.geom,b.geom);
+
+-- Exercício 9
+select a.unidade, a.geom
+from tbunidade as a, tbcurso_por_unidade as b, tbturno as c
+where c.nome = 'EaD' and a.id = b.idunidade and c.id = b.idturno;
+
+-- Exercício 10
+select b.*
+from tbmunicipio as a, tbmunicipio as b
+where a.municipio = 'Jacareí' and st_touches(a.geom,b.geom);
